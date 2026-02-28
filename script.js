@@ -17,8 +17,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            // Change icon if needed (e.g. burger to X)
-            const icon = mobileToggle.querySelector('i');
+            toggleIcon();
+        });
+
+        // Close button inside mobile nav
+        const closeBtn = document.querySelector('.close-menu');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                toggleIcon();
+            });
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!header.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                toggleIcon();
+            }
+        });
+
+        // close when a nav link is clicked (mobile)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    toggleIcon();
+                }
+            });
+        });
+
+        // helper to switch hamburger/close icon on header toggle
+        function toggleIcon() {
+            const icon = mobileToggle.querySelector('.dd');
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
@@ -26,16 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
             }
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!header.contains(e.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                mobileToggle.querySelector('i').classList.remove('fa-times');
-                mobileToggle.querySelector('i').classList.add('fa-bars');
-            }
-        });
+        }
     }
 
     // Scroll Reveal Animation
